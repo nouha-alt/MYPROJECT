@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/material-icons@1.13.12/iconfont/material-icons.min.css">
 <link rel="stylesheet" href="commerce2.css">
 </head>
-  <stile>
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 
 :root {
@@ -257,7 +257,7 @@ nav ul li a.active {
         text-align: center;
     }
 }
-  </stile>
+  </style>
 <body>
 <nav class="navbar">
 <div class="container">
