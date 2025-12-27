@@ -150,9 +150,9 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     text-align: center;
 
-    display: flex;               /* ترتيب المحتوى عمودي */
+    display: flex;              
     flex-direction: column;
-    justify-content: space-between; /* يضع الزر في أسفل البطاقة */
+    justify-content: space-between;
     height: 100%;
 }
 
@@ -579,13 +579,11 @@ const cartCountElement = document.getElementById("cartCount");
 
 document.addEventListener("click", function (e) {
 
-    // إضافة
     if (e.target.classList.contains("add-cart")) {
         cartCount++;
         cartCountElement.textContent = cartCount;
     }
 
-    // إزالة
     if (e.target.classList.contains("remove-cart")) {
         if (cartCount > 0) {
             cartCount--;
@@ -595,7 +593,6 @@ document.addEventListener("click", function (e) {
 
 });
 </script>
-<!-- باقي صفحة المنتجات -->
 
 <script>
 document.querySelectorAll('.add-cart').forEach(btn => {
@@ -605,7 +602,6 @@ document.querySelectorAll('.add-cart').forEach(btn => {
         const type = btn.dataset.type;
         const image = card.querySelector('img').src;
 
-        // الحصول على سلة المنتجات الحالية فقط
         let cart_current = JSON.parse(localStorage.getItem('cart_current')) || [];
         cart_current.push({name, type, image});
         localStorage.setItem('cart_current', JSON.stringify(cart_current));
