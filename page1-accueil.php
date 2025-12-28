@@ -323,6 +323,30 @@ text-align:center;
 </footer>
 
 <script>
+document.getElementById('registerForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const msg = document.getElementById('message');
+    msg.textContent = "";
+    let formData = new FormData(this);
+
+    fetch('register_ajax.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            window.location.href = 'commerce2.php';
+        } else {
+            msg.textContent = data.message;
+        }
+    })
+    .catch(err => {
+        msg.textContent = "Erreur serveur!";
+        console.error(err);
+    });
+});
+</script>
 
 </body>
 </html>
