@@ -249,9 +249,9 @@ text-align:center;
             <div class="logo">Snap<span>Store</span></div>
             <ul>
                 <li><a href="commerce1.php" class="active">Home</a></li>
-                <li><a href="commerce3.html">Vêtements Femme</a></li>
-                <li><a href="commercehomme.html">Vêtements Homme</a></li>
-                <li><a href="Vêtements Enfant.html">Vêtements Enfant</a></li>
+                <li><a href="commerce3.PHP">Vêtements Femme</a></li>
+                <li><a href="commercehomme.PHP">Vêtements Homme</a></li>
+                <li><a href="Vêtements Enfant.PHP">Vêtements Enfant</a></li>
             </ul>
         </div>
     </div>
@@ -264,7 +264,6 @@ text-align:center;
             <div class="left">
                 <span class="line"></span>
                 <h2>Bienvenue dans notre boutique<br> <span>Dècouvrez nos nouveautès</span></h2>
-                <a href="#" class="btn">Contact</a>
             </div>
 
             <div class="right">
@@ -289,9 +288,9 @@ text-align:center;
             <input type="password" class="form-style" name="password" placeholder="Your Password" autocomplete="off" required>
        <i class="input-icon material-icons">lock</i>
         </div>
-         <button  type="submit" class="btn">Submit</button>
+         <button  type="submit" class="btn" onclick="goToHome()">Submit</button>
          </form>
-         <p style="text-align:center; margin-top:10px;">
+ <p style="text-align:center; margin-top:10px;">
        Déjà inscrit ? <a href="login.php" style="color: var(--mainColor);">Se connecter</a>
           </p>
         </div>
@@ -336,7 +335,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e){
     .then(res => res.json())
     .then(data => {
         if(data.success){
-            window.location.href = 'commerce2.php';
+            window.location.href = 'commerce1.php';
         } else {
             msg.textContent = data.message;
         }
@@ -347,6 +346,12 @@ document.getElementById('registerForm').addEventListener('submit', function(e){
     });
 });
 </script>
-
+<script>
+function goToHome() {
+    setTimeout(function(){
+        window.location.href = "commerce1.php";
+    }, 500);
+}
+</script>
 </body>
 </html>
