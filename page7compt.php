@@ -1,3 +1,10 @@
+<?php
+session_start();
+
+$name  = $_SESSION['user_name'] ?? "Invité";
+$email = $_SESSION['user_email'] ?? "";
+$phone = $_SESSION['user_phone'] ?? "";
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
