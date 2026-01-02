@@ -17,12 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $transaction = $_POST['transaction'] ?? '';
     $products  = json_encode($cart);
 
-    // حفظ الطلب في قاعدة البيانات
     $stmt = $conn->prepare("INSERT INTO commandes (user_name, user_email, phone, address, products, payment_method, card_number, transaction_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssssss", $userName, $userEmail, $phone, $address, $products, $payment, $card, $transaction);
     if($stmt->execute()) {
         $message = "Commande enregistrée avec succès!";
-        // تفريغ السلة بعد الحفظ
         $_SESSION['cart'] = [];
         $cart = [];
     } else {
