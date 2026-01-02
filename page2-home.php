@@ -1,4 +1,9 @@
-
+<?php
+session_start();
+$userName = $_SESSION['user_name'] ?? "";
+$conn = new mysqli("localhost", "root", "", "inscription");
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -113,25 +118,7 @@
     border-radius: 20px;
 }
 
-.hero-title {
-    color: white;
-}
 
-.hero-title .red {
-    color: #c91c1c;
-}
-
-.hero p {
-    margin: 15px 0;
-}
-
-.btn {
-    background: rgb(207, 22, 22);
-    color: white;
-    padding: 12px 30px;
-    border-radius: 8px;
-    text-decoration: none;
-}
 
 .products {
     margin-top: 40px;
@@ -144,16 +131,14 @@
 }
 
 .product-card {
-    background: white;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    text-align: center;
-
-    display: flex;              
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    background:#fff;
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,.1);
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
 }
 
 .product-card img {
@@ -167,134 +152,64 @@
     color: #1f1d42;
 }
 
-.product-price {
-    margin: 8px 0;
-}
-
 .price {
     font-size: 18px;
     font-weight: bold;
     color: rgb(207, 22, 22);
 }
 
-.product-colors {
-    margin: 10px 0;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    order: 1; 
+.add-cart,.remove-cart{
+    width:100%;
+    padding:10px;
+    background:#1f1d42;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    margin-top:10px;
+    cursor:pointer
 }
-
-.product-colors .color {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    cursor: pointer;
-    transition: transform 0.2s, border 0.2s;
+.add-cart:hover,.remove-cart:hover{
+    background:rgb(207,22,22);
 }
-
-.product-colors .color:hover {
-    transform: scale(1.2);
-    border-color: #1f1d42;
+.cart-link{
+    position:relative;
 }
-
-.add-cart {
-    width: 100%;
-    padding: 10px;
-    background-color: #1f1d42;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-    order: 2;      
-    margin-top: auto;
+.cart-count{
+    position:absolute;
+    top:-6px;right:-10px;
+    background:crimson;
+    color:#fff;
+    font-size:12px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
-
-.add-cart:hover {
-    background-color: rgb(207, 22, 22);
+footer{
+    background:#272749;
+    color:#fff;
+    text-align:center;
+    padding:20px;
+    }
+    .colors {
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+    justify-content:center;
 }
-
-footer {
-    background-color: #272749;
-    color: white;
-    text-align: center;
-    padding: 20px;
+.colors img {
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    object-fit:cover;
+    cursor:pointer;
+    border:2px solid #ddd;
 }
-.material-symbols-outlined {
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
-}
-nav.links {
-    display: flex;          
-    justify-content: flex-end; 
-    align-items: center;
-    gap: 20px;             
-}
-nav.links a {
-    display: flex;        
-    align-items: center;
-    gap: 5px;                
-    color: white;
-    text-decoration: none;
-}
-.cart-link {
-    position: relative;
-}
-
-.cart-count {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    background: crimson;
-    color: white;
-    font-size: 12px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-.remove-cart {
- width: 100%;
-    padding: 10px;
-    background-color: #1f1d42;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-    order: 2;      
-    margin-top: auto;
-}
-
-.remove-cart:hover {
-    background-color: rgb(207, 22, 22);
-}
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
+.colors img:hover {
+    border-color:#c91c1c;
 }
     </style>
 
@@ -308,261 +223,104 @@ nav.links a {
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
     <div class="logo">Snap<span>Store</span></div>
+<nav class="link">
+                <a href="commerce2.php"> <span >iscription</span></a>
 
-    <div class="search-box">
-        <input type="search" placeholder="Recherche...">
-    </div>                
-    <nav class="links">
-                <a href="commerce2.html"> <span >iscription</span></a>
-
-        <a href="Acheter.html" class="cart-link">Acheter <span class="material-symbols-outlined">shopping_cart</span>
+        <a href="Acheter.php" class="cart-link">Acheter <span class="material-symbols-outlined">shopping_cart</span>
             <span class="cart-count" id="cartCount">0</span>
         </a>
-<a href="compte.html" class="account-icon">
+<a href="compte.php" class="account-icon">
   <span class="material-symbols-outlined">account_circle</span>
-</span>
-    </nav>
-
-
+<?php if($userName!=""){echo htmlspecialchars($userName);} ?>
+</a>
+</nav>
 </header>
-
 <div class="main-layout">
-
     <aside class="side-menu" id="sideMenu">
-        <a href="commerce3.html">Vêtements Femme</a>
-        <a href="commercehomme.html">Vêtements Homme</a>
-        <a href="Vêtements Enfant.html">Vêtements Enfant</a>
-        
-    </aside>
+        <a href="commerce3.php">Vêtements Femme</a>
+        <a href="commercehomme.php">Vêtements Homme</a>
+        <a href="Vêtements Enfant.php">Vêtements Enfant</a>
+        
+    </aside>
+<main class="content">
 
-    <main class="content">
+<section class="hero">
+    <h1><span style="color:#c91c1c">Remise de 30%</span> sur tous les produits</h1>
+<p>Offre pour une durée limitée</p>
+</section>
+<section class="products">
 
-        <section class="hero">
-            <h1 class="hero-title">
-                <span class="red">Remise de 30%</span> sur tous les produits
-            </h1>
-            <p>Offre pour une durée limitée</p>
-            <a href="#" class="btn">Achetez dès maintenant</a>
-        </section>
+<div class="products-grid">
 
+<?php
+$result = $conn->query("SELECT * FROM products");
+while ($p = $result->fetch_assoc()) {
+?>
+    <div class="product-card">
 
-<div class="modal" id="checkoutModal">
-  <div class="modal-content">
-    <h2>confirmer la commande</h2>
+        <img src="<?php echo htmlspecialchars($p['image']); ?>">
 
-    <div id="cartItems"></div>
+        <h3 class="product-name">
+            <?php echo htmlspecialchars($p['name']); ?>
+        </h3>
 
-    <button onclick="closeModal()">remove</button>
-    <button onclick="confirmOrder()">confirmer la command</button>
-  </div>
-</div>
+        <div>
+            <span class="price">
+                <?php echo htmlspecialchars($p['price']); ?> DA
+            </span>
+        </div>
 
+        <?php
+        $colors = [];
+        if (!empty($p['colors'])) {
+            $colors = explode(',', $p['colors']);
+        }
+        ?>
 
-        <section class="products">
-
-            <div class="products-grid">
-
-                <div class="product-card">
-                    <img src="https://i.pinimg.com/736x/69/13/03/691303326115216227313f6c57db19c9.jpg">
-                    <h3 class="product-name">Montre Homme/Femme</h3>
-                    <div class="product-price">
-                        <span class="price">3000 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-                </div>
-
-<div class="product-card">
-    <img class="product-image" src="https://img.fantaskycdn.com/4e1cac2174e44e8930873e053b0e0b72_750x.jpeg" alt="Chaussure Homme">
-
-    <h3 class="product-name">Chaussure Homme</h3>
-
-<div class="product-price">
-        <span class="price">2500 DA</span>
-    </div>
-    <div class="product-colors">
-        <span class="color" data-image="https://img.fantaskycdn.com/4e1cac2174e44e8930873e053b0e0b72_750x.jpeg" style="background-color: black;" title="Noir"></span>
-        <span class="color" data-image="https://img.fantaskycdn.com/651d32f8ed5c46af61f34599686524f5_750x.jpeg" style="background-color: white;" title="Blanc"></span>
-    </div>
-
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-</div>
-
-
-<div class="product-card">
-    <img class="product-image" src="https://princessace.com/cdn/shop/files/oversized-preppy-v-neck-knitted-knit-cardigan-red-one-size-cardiagn-250126-165.webp?v=1761663375&width=823" alt="Chaussure Homme">
-
-    <h3 class="product-name">pull pour filles</h3>
-    <div class="product-price">
-        <span class="price">4500 DA</span>
-    </div>
-    <div class="product-colors">
-        <span class="color" data-image="https://princessace.com/cdn/shop/files/oversized-preppy-v-neck-knitted-knit-cardigan-red-one-size-cardiagn-250126-165.webp?v=1761663375&width=823" style="background-color: rgb(138, 19, 19);" title="Noir"></span>
-        <span class="color" data-image="https://princessace.com/cdn/shop/files/oversized-preppy-v-neck-knitted-knit-cardigan-cardiagn-250126-111.webp?v=1761663370&width=823" style="background-color: rgb(203, 57, 125);" title="Blanc"></span>
-                <span class="color" data-image="https://princessace.com/cdn/shop/files/oversized-preppy-v-neck-knitted-knit-cardigan-black-one-size-cardiagn-250126-908.webp?v=1761663380&width=823" style="background-color: rgb(7, 6, 7);" title="Blanc"></span>
-                <span class="color" data-image="https://princessace.com/cdn/shop/files/oversized-preppy-v-neck-knitted-knit-cardigan-orange-one-size-cardiagn-250126-229.webp?v=1761663385&width=823" style="background-color: rgb(173, 95, 47);" title="Blanc"></span>
-                <span class="color" data-image="https://princessace.com/cdn/shop/files/oversized-preppy-v-neck-knitted-knit-cardigan-milk-blue-one-size-cardiagn-250126-913.webp?v=1761663390" style="background-color: rgb(159, 203, 241);" title="Blanc"></span>
-
-    </div>
-
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-</div>
-
-<div class="product-card">
-    <img class="product-image" src="https://img.fantaskycdn.com/0d51789170524cf86ca5e7b24a4fd3b1_1024x.jpeg" alt="Chaussure Homme">
-
-    <h3 class="product-name">Montre Femme</h3>
-
-    <div class="product-price">
-        <span class="price">4500 DA</span>
-    </div>
-
-    <div class="product-colors">
-        <span class="color" data-image="https://img.fantaskycdn.com/0d51789170524cf86ca5e7b24a4fd3b1_1024x.jpeg" style="background-color: rgb(206, 204, 201);" title="Noir"></span>
-                <span class="color" data-image="https://img.fantaskycdn.com/4eba6a4d8bca8c01959ce8c3f1adb219_1080x.jpeg" style="background-color: rgb(238, 189, 163);" title="Noir"></span>
-
-
-    </div>
-
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-</div>
-
-<div class="product-card">
-    <img class="product-image" src="https://img.fantaskycdn.com/c433cdd9693406e25b1dfe39e95e060a_1080x.jpeg" alt="Chaussure Homme">
-
-    <h3 class="product-name">bottes en cuir por filles</h3>
-
-    <div class="product-price">
-        <span class="price">3500 DA</span>
-    </div>
-
-    <div class="product-colors">
-        <span class="color" data-image="https://img.fantaskycdn.com/c433cdd9693406e25b1dfe39e95e060a_1080x.jpeg" style="background-color: rgb(11, 11, 11);" title="Noir"></span>
-                <span class="color" data-image="https://img.fantaskycdn.com/23f163bc783f4a2d2eede20bf063c616_1080x.jpeg" style="background-color: rgb(238, 189, 163);" title="Noir"></span>
-
-</div>
-    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-</div>
-
-
-
-<script>const colorOptions = document.querySelectorAll('.product-colors .color');
-
-colorOptions.forEach(color => {
-    color.addEventListener('click', () => {
-        const newImage = color.getAttribute('data-image');
-        const productCard = color.closest('.product-card');
-        const productImage = productCard.querySelector('.product-image');
-        productImage.src = newImage;
-    });
-});</script>
-<div class="product-card">
-                    <img src="https://i.pinimg.com/1200x/95/55/b8/9555b8cb40bbfc2e2849ee0d8cc84c69.jpg" alt="Produit 2">
-                    <h3 class="product-name">Bracelet</h3>
-                    <div class="product-price">
-                        <span class="price">2000 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-                </div>
-                <div class="product-card">
-                    <img src="https://juliafashionshop.com/cdn/shop/products/2023-14K-Gold-Plated-Korean-New-Design-Fashion-Jewelry-Square-Grey-Crystal-Earrings-Elegant-Women-s_1000x.webp?v=1704442049" alt="Produit 2">
-                    <h3 class="product-name">Boucle d'oreille</h3>
-                    <div class="product-price">
-                        <span class="price">1000 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-                </div>
-
-
-                 <div class="product-card">
-                    <img src="https://cdn.wconcept.com/products/resize/632x843/migration/i/imgpin.wconceptusa.com/189fc3f5f98/49b94/49/KpaA92hbnc0Uisl_BAKIpk26_9o.png" alt="Produit 2">
-                    <h3 class="product-name">chemise homme</h3>
-                    <div class="product-price">
-                        <span class="price">2000 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-                </div>
-
-                <div class="product-card">
-                    <img src="https://i.pinimg.com/1200x/de/b0/98/deb098f857194a00b51e29d737b7838c.jpg" alt="Produit 2">
-                    <h3 class="product-name">Sac pour femme</h3>
-                    <div class="product-price">
-                        <span class="price">2000 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-                </div>
-
-                 <div class="product-card">
-                    <img src="https://i.pinimg.com/736x/b5/bd/fb/b5bdfbe6012939e736669c98fa18b80f.jpg" alt="Produit 2">
-                    <h3 class="product-name">chaussures </h3>
-                    <div class="product-price">
-                        <span class="price">1200 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="add-cart">Retirer</button>
-
-                </div>
-
-                
-                <div class="product-card">
-                    <img src="https://i.pinimg.com/1200x/6c/35/28/6c3528edbcbdf8bdb3f5a20b70c6461a.jpg" alt="Produit 2">
-                    <h3 class="product-name">T-chirt de sport pour hommes</h3>
-                    <div class="product-price">
-                        <span class="price">3200 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart">Retirer</button>
-
-</div>
-                <div class="product-card">
-                    <img src="https://i.pinimg.com/1200x/5f/4a/ff/5f4affdaec9fabef2eea82f5a39e97cd.jpg" alt="Produit 2">
-                    <h3 class="product-name">T-chirt de sport pour hommes</h3>
-                    <div class="product-price">
-                        <span class="price">3200 DA</span>
-                    </div>
-                    <button class="add-cart" data-type="shoes">Ajouter au panier</button>
-                     <button class="remove-cart" >Retirer</button>
-
-                </div>
+        <?php if (count($colors) > 0): ?>
+            <div class="colors">
+                <?php foreach ($colors as $c): ?>
+                    <img src="<?php echo htmlspecialchars(trim($c)); ?>"
+                         onclick="this.closest('.product-card').querySelector('img').src=this.src">
+                <?php endforeach; ?>
             </div>
+        <?php endif; ?>
 
-        </section>
+      <button class="add-cart"
+            data-name="<?php echo htmlspecialchars($p['name']); ?>"
+            data-price="<?php echo htmlspecialchars($p['price']); ?>"
+            data-image="<?php echo htmlspecialchars($p['image']); ?>">
+            Ajouter au panier
+        </button>
 
-    </main>
+        <button class="remove-cart">Retirer</button>
+
+    </div>
+<?php } ?>
+
+</div>
+</section>
+
+</main>
 </div>
 
- <footer>
+<footer>
     <div class="footer-content">
-        <p>© 2024 SnapStore. Tous droits réservés.</p>
+        <p>© 2025 SnapStore. Tous droits réservés.</p>
         <p>Téléphone : 0550 123 456 | Email : <a href="mailto:info@snapstore.com">info@snapstore.com</a></p>
         <p>
             <a href="#">Politique de confidentialité</a> |
             <a href="#">Conditions d'utilisation</a>
         </p>
-        <p>
-            Suivez-nous :
-            <a href="#">Facebook</a> |
-            <a href="#">Instagram</a> |
-            <a href="#">TikTok</a>
-        </p>
+        <div class="social-media">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
     </div>
+
 </footer>
 <script>
 function toggleMenu() {
@@ -574,42 +332,57 @@ function toggleMenu() {
 
 
 <script>
-let cartCount = 0;
-const cartCountElement = document.getElementById("cartCount");
+function toggleMenu(){
+document.getElementById("sideMenu").classList.toggle("active");
+}
+</script>
 
-document.addEventListener("click", function (e) {
+<script>
+document.querySelectorAll('.add-cart').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const card = btn.closest('.product-card');
+    const product = {
+      name: card.querySelector('.product-name').textContent,
+      price: card.querySelector('.price').textContent,
+      image: card.querySelector('img').src
+    };
 
-    if (e.target.classList.contains("add-cart")) {
-        cartCount++;
-        cartCountElement.textContent = cartCount;
-    }
-
-    if (e.target.classList.contains("remove-cart")) {
-        if (cartCount > 0) {
-            cartCount--;
-            cartCountElement.textContent = cartCount;
-        }
-    }
-
+    fetch('cart_add.php',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(product)
+    })
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.success){
+        document.getElementById('cartCount').textContent = d.count;
+      }
+    });
+  });
 });
 </script>
 
 <script>
-document.querySelectorAll('.add-cart').forEach(btn => {
-    btn.addEventListener('click', function() {
+document.querySelectorAll('.remove-cart').forEach(btn => {
+    btn.addEventListener('click', () => {
         const card = btn.closest('.product-card');
-        const name = card.querySelector('.product-name').textContent;
-        const type = btn.dataset.type;
-        const image = card.querySelector('img').src;
+        const productName = card.querySelector('.product-name').textContent;
 
-        let cart_current = JSON.parse(localStorage.getItem('cart_current')) || [];
-        cart_current.push({name, type, image});
-        localStorage.setItem('cart_current', JSON.stringify(cart_current));
-
-        alert(name + " ajouté au panier !");
+        fetch('cart_remove.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: productName})
+        })
+        .then(r => r.json())
+        .then(d => {
+            if(d.success){
+                document.getElementById('cartCount').textContent = d.count;
+            }
+        });
     });
 });
 </script>
+
 </body>
 </html>
 
