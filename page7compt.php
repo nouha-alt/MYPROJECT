@@ -169,7 +169,17 @@ nav a:hover {
             <i class="material-symbols-outlined">email</i>
             <span>Email :</span> <?php echo htmlspecialchars($email); ?>
         </div>
-</div>
+                <?php if(!empty($phone)): ?>
+        <div class="info-box">
+            <i class="material-symbols-outlined">phone</i>
+            <span>Téléphone :</span> <?php echo htmlspecialchars($phone); ?>
+        </div>
+        <?php endif; ?>
 
+        <button class="btn btn-primary">Modifier le profil</button>
+        <a href="logout.php"><button class="btn btn-logout">Se déconnecter</button></a>
+    </div>
+
+</div>
 </body>
 </html>
